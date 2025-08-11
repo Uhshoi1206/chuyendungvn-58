@@ -1,6 +1,7 @@
 import { BlogPost } from '@/models/BlogPost';
 import { trucks } from '@/data/truckData';
 import { Truck } from '@/models/TruckTypes';
+import { filterVisibleTrucks } from '@/config/categoryVisibility';
 
 /**
  * Hook để tìm sản phẩm liên quan đến bài viết blog
@@ -89,8 +90,9 @@ const useRelatedTruckForBlogPost = (post: BlogPost): Truck | null => {
   // Tìm các mẫu xe cụ thể được đề cập
   const mentionedModels: Record<string, number> = {};
   
+  const visibleTrucks = filterVisibleTrucks(trucks);
   // Tạo danh sách tất cả các mẫu xe
-  trucks.forEach(truck => {
+  visibleTrucks.forEach(truck => {
     // Tách tên xe thành các từ để tìm kiếm
     const truckNameWords = truck.name.toLowerCase().split(' ');
     
@@ -166,7 +168,7 @@ const useRelatedTruckForBlogPost = (post: BlogPost): Truck | null => {
   
   // Nếu không tìm thấy xe phù hợp cụ thể, chọn xe ngẫu nhiên từ loại xe ưu tiên
   if (!bestMatchTruckId && preferredVehicleType) {
-    const trucksOfPreferredType = trucks.filter(truck => truck.type === preferredVehicleType);
+    const trucksOfPreferredType = visibleTrucks.filter(truck => truck.type === preferredVehicleType);
     if (trucksOfPreferredType.length > 0) {
       const randomIndex = Math.floor(Math.random() * trucksOfPreferredType.length);
       return trucksOfPreferredType[randomIndex];
@@ -175,7 +177,7 @@ const useRelatedTruckForBlogPost = (post: BlogPost): Truck | null => {
   
   // Trả về xe phù hợp nhất nếu tìm thấy
   if (bestMatchTruckId) {
-    return trucks.find(truck => truck.id === bestMatchTruckId) || null;
+    return visibleTrucks.find(truck => truck.id === bestMatchTruckId) || null;
   }
   
   // Nếu không tìm thấy xe phù hợp, trả về null

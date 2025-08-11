@@ -20,6 +20,7 @@ import {
   DrawerTitle,
   DrawerTrigger, 
 } from '@/components/ui/drawer';
+import { filterVisibleTrucks, getEnabledTypes, isTypeEnabled } from '@/config/categoryVisibility';
 
 const TruckCatalog: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -74,7 +75,7 @@ const TruckCatalog: React.FC = () => {
   // Hàm áp dụng bộ lọc
   const applyFilters = () => {
     console.log("Áp dụng bộ lọc:", filters);
-    let result = [...trucks];
+    let result = filterVisibleTrucks(trucks);
     
     // Lọc theo loại xe
     if (filters.vehicleType) {
@@ -183,6 +184,10 @@ const TruckCatalog: React.FC = () => {
   };
 
   // Tạo title dựa trên loại xe được chọn
+  const enabledTypes = getEnabledTypes();
+  const safeSelectedType: VehicleType = (filters.vehicleType && isTypeEnabled(filters.vehicleType))
+    ? (filters.vehicleType as VehicleType)
+    : (enabledTypes[0] || 'xe-tai');
   const getPageTitle = () => {
     const typeLabels = {
       'xe-tai': 'Xe Tải',
@@ -190,9 +195,7 @@ const TruckCatalog: React.FC = () => {
       'mooc': 'Sơ Mi Rơ Mooc',
       'dau-keo': 'Xe Đầu Kéo'
     };
-    
-    const currentType = filters.vehicleType || 'xe-tai';
-    return `${typeLabels[currentType]} | ChuyenDungVN.com - Danh Mục Xe`;
+    return `${typeLabels[safeSelectedType]} | ChuyenDungVN.com - Danh Mục Xe`;
   };
 
   return (
@@ -207,7 +210,7 @@ const TruckCatalog: React.FC = () => {
       <div className="py-6 bg-gray-50">
         <div className="container mx-auto px-4">
           <VehicleTypeTabs
-            selectedType={filters.vehicleType || 'xe-tai'}
+            selectedType={safeSelectedType}
             onTypeChange={handleVehicleTypeChange}
           />
           

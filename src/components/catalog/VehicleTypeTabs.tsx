@@ -2,6 +2,7 @@ import React from 'react';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { VehicleType } from '@/models/TruckTypes';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { getEnabledTypes } from '@/config/categoryVisibility';
 
 interface VehicleTypeTabsProps {
   selectedType: VehicleType;
@@ -50,6 +51,9 @@ const vehicleTabs: TabInfo[] = [
 const VehicleTypeTabs: React.FC<VehicleTypeTabsProps> = ({ selectedType, onTypeChange }) => {
   const isMobile = useIsMobile();
 
+  const enabledTypes = new Set(getEnabledTypes());
+  const tabsToRender = vehicleTabs.filter(tab => enabledTypes.has(tab.value));
+
   const handleTabChange = (value: string) => {
     onTypeChange(value as VehicleType);
   };
@@ -60,14 +64,14 @@ const VehicleTypeTabs: React.FC<VehicleTypeTabsProps> = ({ selectedType, onTypeC
       <div className="w-full flex justify-center mb-3 px-1">
         <div
           className="w-full mx-auto"
-          style={{ display: 'grid', gridTemplateColumns: `repeat(${Math.min(vehicleTabs.length, 4)}, minmax(0, 1fr))` }}
+          style={{ display: 'grid', gridTemplateColumns: `repeat(${Math.min(tabsToRender.length, 4)}, minmax(0, 1fr))` }}
         >
-          {vehicleTabs.map((tab, idx) => {
+          {tabsToRender.map((tab, idx) => {
             const isActive = selectedType === tab.value;
             const radius =
               idx === 0
                 ? 'rounded-l-xl'
-                : idx === vehicleTabs.length - 1
+                : idx === tabsToRender.length - 1
                 ? 'rounded-r-xl'
                 : '';
             return (
@@ -112,13 +116,13 @@ const VehicleTypeTabs: React.FC<VehicleTypeTabsProps> = ({ selectedType, onTypeC
               flex w-full p-0 overflow-hidden rounded-2xl bg-transparent
               "
           >
-            {vehicleTabs.map((tab, idx) => {
+            {tabsToRender.map((tab, idx) => {
               const isActive = selectedType === tab.value;
               // Bo tròn đầu và cuối thanh tab
               const radius =
                 idx === 0
                   ? 'rounded-l-2xl'
-                  : idx === vehicleTabs.length - 1
+                  : idx === tabsToRender.length - 1
                   ? 'rounded-r-2xl'
                   : '';
               return (

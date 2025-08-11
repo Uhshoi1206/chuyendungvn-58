@@ -19,6 +19,7 @@ import BrandCategories from '@/components/home/BrandCategories';
 import ContactSection from '@/components/home/ContactSection';
 import BlogSection from '@/components/home/BlogSection';
 import WeightCategories from '@/components/home/WeightCategories';
+import { isTypeEnabled } from '@/config/categoryVisibility';
 
 const Index = () => {
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
@@ -57,40 +58,48 @@ const Index = () => {
       
       <div className="w-full overflow-hidden">
         {/* Xe Tải Nổi Bật */}
-        <VehicleCarousel 
-          vehicles={featuredTrucks} 
-          title="Xe Tải Nổi Bật" 
-          description="Các dòng xe tải được nhiều khách hàng tin dùng, đa dạng tải trọng và thương hiệu"
-          viewAllUrl="/danh-muc-xe?type=xe-tai"
-          viewAllText="Xem tất cả xe tải"
-        />
+        {isTypeEnabled('xe-tai') && (
+          <VehicleCarousel 
+            vehicles={featuredTrucks} 
+            title="Xe Tải Nổi Bật" 
+            description="Các dòng xe tải được nhiều khách hàng tin dùng, đa dạng tải trọng và thương hiệu"
+            viewAllUrl="/danh-muc-xe?type=xe-tai"
+            viewAllText="Xem tất cả xe tải"
+          />
+        )}
 
         {/* Cẩu Chuyên Dụng */}
-        <VehicleCarousel 
-          vehicles={specializedCranes} 
-          title="Cẩu Chuyên Dụng" 
-          description="Các dòng xe cẩu chuyên dụng, đa dạng tải trọng và thương hiệu"
-          viewAllUrl="/danh-muc-xe?type=xe-cau"
-          viewAllText="Xem tất cả xe cẩu"
-        />
+        {isTypeEnabled('xe-cau') && (
+          <VehicleCarousel 
+            vehicles={specializedCranes} 
+            title="Cẩu Chuyên Dụng" 
+            description="Các dòng xe cẩu chuyên dụng, đa dạng tải trọng và thương hiệu"
+            viewAllUrl="/danh-muc-xe?type=xe-cau"
+            viewAllText="Xem tất cả xe cẩu"
+          />
+        )}
 
         {/* Sơ Mi Rơ Mooc */}
-        <VehicleCarousel 
-          vehicles={semiTrailers} 
-          title="Sơ Mi Rơ Mooc" 
-          description="Các dòng mooc chuyên dụng, đa dạng loại và thương hiệu"
-          viewAllUrl="/danh-muc-xe?type=mooc"
-          viewAllText="Xem tất cả sơ mi rơ mooc"
-        />
+        {isTypeEnabled('mooc') && (
+          <VehicleCarousel 
+            vehicles={semiTrailers} 
+            title="Sơ Mi Rơ Mooc" 
+            description="Các dòng mooc chuyên dụng, đa dạng loại và thương hiệu"
+            viewAllUrl="/danh-muc-xe?type=mooc"
+            viewAllText="Xem tất cả sơ mi rơ mooc"
+          />
+        )}
 
         {/* Xe Đầu Kéo */}
-        <VehicleCarousel 
-          vehicles={tractors} 
-          title="Xe Đầu Kéo" 
-          description="Các dòng xe đầu kéo, đa dạng công suất và thương hiệu"
-          viewAllUrl="/danh-muc-xe?type=dau-keo"
-          viewAllText="Xem tất cả xe đầu kéo"
-        />
+        {isTypeEnabled('dau-keo') && (
+          <VehicleCarousel 
+            vehicles={tractors} 
+            title="Xe Đầu Kéo" 
+            description="Các dòng xe đầu kéo, đa dạng công suất và thương hiệu"
+            viewAllUrl="/danh-muc-xe?type=dau-keo"
+            viewAllText="Xem tất cả xe đầu kéo"
+          />
+        )}
         
         {/* Phân Loại Theo Tải Trọng */}
         <div className="bg-gray-50 w-full">

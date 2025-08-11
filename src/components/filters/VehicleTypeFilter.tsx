@@ -3,6 +3,7 @@ import React from 'react';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { VehicleType } from '@/models/TruckTypes';
+import { getEnabledTypes } from '@/config/categoryVisibility';
 
 interface VehicleTypeFilterProps {
   selectedType: VehicleType | null;
@@ -20,6 +21,8 @@ export const VehicleTypeFilter: React.FC<VehicleTypeFilterProps> = ({
   selectedType,
   onTypeChange,
 }) => {
+  const enabledTypes = new Set(getEnabledTypes());
+  const options = vehicleTypes.filter(t => enabledTypes.has(t.value));
   return (
     <div className="space-y-4">
       <Label className="text-base font-medium">Loại xe</Label>
@@ -30,7 +33,7 @@ export const VehicleTypeFilter: React.FC<VehicleTypeFilterProps> = ({
           onTypeChange(newValue || null);
         }}
       >
-        {vehicleTypes.map((type) => (
+        {options.map((type) => (
           <div key={type.value} className="flex items-center space-x-2">
             <RadioGroupItem value={type.value} id={`type-${type.value}`} />
             <Label htmlFor={`type-${type.value}`}>{type.label}</Label>

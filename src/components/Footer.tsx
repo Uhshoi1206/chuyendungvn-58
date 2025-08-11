@@ -6,6 +6,7 @@ import AddressRegions from './AddressRegions';
 import { addressRegions } from '@/data/addressData';
 import { useToast } from './ui/use-toast';
 import { submitToGoogleSheets, ContactData } from '@/services/googleSheetsService';
+import { isTypeEnabled } from '@/config/categoryVisibility';
 
 const Footer: React.FC = () => {
   const { toast } = useToast();
@@ -147,28 +148,36 @@ const Footer: React.FC = () => {
           {/* Vehicle Categories */}
           <div>
             <h3 className="font-heading text-xl font-bold mb-4">Danh mục xe</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link to="/danh-muc-xe?type=xe-tai" className="text-gray-300 hover:text-primary transition-colors">
-                  Xe Tải
-                </Link>
-              </li>
-              <li>
-                <Link to="/danh-muc-xe?type=xe-cau" className="text-gray-300 hover:text-primary transition-colors">
-                  Xe Cẩu
-                </Link>
-              </li>
-              <li>
-                <Link to="/danh-muc-xe?type=mooc" className="text-gray-300 hover:text-primary transition-colors">
-                  Sơ Mi Rơ Mooc
-                </Link>
-              </li>
-              <li>
-                <Link to="/danh-muc-xe?type=dau-keo" className="text-gray-300 hover:text-primary transition-colors">
-                  Xe Đầu Kéo
-                </Link>
-              </li>
-            </ul>
+              <ul className="space-y-2">
+                {isTypeEnabled('xe-tai') && (
+                  <li>
+                    <Link to="/danh-muc-xe?type=xe-tai" className="text-gray-300 hover:text-primary transition-colors">
+                      Xe Tải
+                    </Link>
+                  </li>
+                )}
+                {isTypeEnabled('xe-cau') && (
+                  <li>
+                    <Link to="/danh-muc-xe?type=xe-cau" className="text-gray-300 hover:text-primary transition-colors">
+                      Xe Cẩu
+                    </Link>
+                  </li>
+                )}
+                {isTypeEnabled('mooc') && (
+                  <li>
+                    <Link to="/danh-muc-xe?type=mooc" className="text-gray-300 hover:text-primary transition-colors">
+                      Sơ Mi Rơ Mooc
+                    </Link>
+                  </li>
+                )}
+                {isTypeEnabled('dau-keo') && (
+                  <li>
+                    <Link to="/danh-muc-xe?type=dau-keo" className="text-gray-300 hover:text-primary transition-colors">
+                      Xe Đầu Kéo
+                    </Link>
+                  </li>
+                )}
+              </ul>
             
             {/* Phân cách và Tiện ích */}
             <div className="mt-6 pt-6 border-t border-gray-700">
