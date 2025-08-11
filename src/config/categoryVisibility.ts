@@ -8,7 +8,7 @@ export const categoryVisibility: Record<CategoryKey, boolean> = {
   'xe-tai': true,
   'xe-cau': true,
   'mooc': true,
-  'dau-keo': true,
+  'dau-keo': false,
 };
 
 export const isTypeEnabled = (type: VehicleType): boolean => categoryVisibility[type] !== false;
